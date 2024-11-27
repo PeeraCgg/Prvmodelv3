@@ -75,27 +75,27 @@ const ProfilePage = () => {
   const getBackgroundColor = (type) => {
     switch (type.toLowerCase()) {
       case 'silver':
-        return 'bg-gradient-to-r from-gray-400 to-gray-500';
+        return 'bg-gradient-to-r from-gray-200 to-gray-300';
       case 'gold':
-        return 'bg-gradient-to-r from-yellow-400 to-yellow-500';
+        return 'bg-gradient-to-r from-yellow-200 to-yellow-300';
       case 'platinum':
-        return 'bg-gradient-to-r from-gray-300 to-gray-400';
-      case 'diamond':
-        return 'bg-gradient-to-r from-blue-500 to-blue-600';
-      default:
         return 'bg-gradient-to-r from-gray-400 to-gray-500';
+      case 'diamond':
+        return 'bg-gradient-to-r from-indigo-500 to-indigo-600';
+      default:
+        return 'bg-gradient-to-r from-gray-200 to-gray-300';
     }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-green-300 via-green-100 to-green-50">
-      <div className="bg-white shadow-lg rounded-3xl p-6 w-full max-w-md relative">
+      <div className="bg-white shadow-lg rounded-3xl p-4 w-full max-w-md relative">
         {/* Profile Header */}
         <div className="absolute top-4 right-4 flex items-center space-x-4">
           <img
             src={profileImage}
             alt="Profile"
-            className="w-10 h-10 rounded-full shadow-md border-2 border-green-400"
+            className="w-8 h-8 rounded-full shadow-md border-2 border-green-400"
           />
           <button onClick={toggleMenu} className="focus:outline-none">
             <svg
@@ -111,7 +111,7 @@ const ProfilePage = () => {
             </svg>
           </button>
         </div>
-
+  
         {/* Dropdown Menu */}
         {menuOpen && (
           <div
@@ -150,44 +150,69 @@ const ProfilePage = () => {
             </ul>
           </div>
         )}
-
+  
         {/* Membership Card */}
         <div
-          className={`p-6 rounded-xl shadow-md relative text-white mt-16 ${getBackgroundColor(
+          className={`flex items-center justify-between p-10 rounded-xl shadow-md relative text-white mt-10 ${getBackgroundColor(
             prvType
           )}`}
+          style={{ height: '190px' }} // ตั้งความสูงสำหรับการ์ด
         >
-          <h1 className="text-xl font-semibold tracking-wide">{prvType}</h1>
-          <div className="mt-6">
-            <p className="text-sm tracking-wide">Points</p>
-            <p className="text-3xl font-semibold">{points}</p>
-            <div className="w-full bg-gray-600 rounded-full h-2 mt-4">
-              <div
-                className="bg-yellow-400 h-2 rounded-full"
-                style={{ width: `${progressWidth}%` }}
-              ></div>
+          {/* Logo */}
+          <div className="flex flex-col items-center">
+            <div className="relative">
+              {/* วงกลมรอบตัว C */}
+              <div className="w-20 h-20 rounded-full border-4 border-[#fbbd5c] flex items-center justify-center shadow-lg ">
+                <div className="w-14 h-14 rounded-full border-4 border-[#fbbd5c] flex items-center justify-center shadow-md ">
+                  <p className="text-[32px] font-extrabold bg-gradient-to-br from-[#fbd55b] to-[#d8a93a] bg-clip-text text-transparent">
+                    C
+                  </p>
+                </div>
+              </div>
+              {/* ขีดด้านล่าง */}
+              <div className="w-8 h-2 bg-gradient-to-r from-[#fbbd5c] to-[#d8a93a] mt-2 mx-auto shadow-sm"></div>
+            </div>
+          </div>
+  
+          {/* Card Details */}
+          <div className="ml-4 flex-1">
+            <h1 className="text-lg font-extrabold bg-gradient-to-r from-[#fbbd5c] to-[#d9a93a] bg-clip-text text-transparent">
+              CHEE CHAN
+            </h1>
+            <p className="text-xs uppercase tracking-wider bg-gradient-to-r from-[#fbd55b] to-[#d8a93a] bg-clip-text text-transparent">
+              Privilege Card
+            </p>
+            <div className="mt-2">
+              <p className="text-xs tracking-wide">Points</p>
+              <p className="text-lg font-semibold">{points}</p>
+              <div className="w-full bg-gray-600 rounded-full h-2 mt-2">
+                <div
+                  className="bg-yellow-400 h-2 rounded-full"
+                  style={{ width: `${progressWidth}%` }}
+                ></div>
+              </div>
             </div>
           </div>
         </div>
-
-        {/* Expire Date */}
+  
         <div className="flex justify-between mt-6">
-          <p className="text-lg font-medium">Expire Date</p>
-          <p className="text-lg">
+          <p className="text-sm font-medium">Expire Date</p>
+          <p className="text-sm">
             {loading ? 'Loading...' : expireDate ? new Date(expireDate).toLocaleDateString() : 'N/A'}
           </p>
         </div>
-
-        {/* View Rewards Button */}
+  
         <button
           onClick={() => navigate('/viewreward')}
-          className="bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-4 w-full rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-md text-lg font-medium mt-6"
+          className="bg-gradient-to-r from-green-500 to-green-600 text-white py-2 px-3 w-full rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-md text-md font-medium mt-4"
         >
           View Rewards
         </button>
       </div>
     </div>
   );
+  
+  
 };
 
 export default ProfilePage;
