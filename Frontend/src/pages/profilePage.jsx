@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 import { getLineUserId } from "../utils/storage.js";
 
 const ProfilePage = () => {
@@ -23,7 +24,13 @@ const ProfilePage = () => {
       try {
         const lineUserId = getLineUserId();
         if (!lineUserId) {
-          alert("User not logged in via LINE.");
+          Swal.fire({
+            title: "Error",
+            text: "User not logged in via LINE.",
+            icon: "error",
+            timer: 2000,
+            showConfirmButton: false,
+          });
           navigate("/");
           return;
         }
@@ -33,7 +40,13 @@ const ProfilePage = () => {
         });
 
         if (response.data.isNewUser) {
-          alert("ผู้ใช้ใหม่ กรุณากรอกข้อมูล");
+          Swal.fire({
+            title: "Welcome",
+            text: "ผู้ใช้ใหม่ กรุณากรอกข้อมูล",
+            icon: "info",
+            timer: 2000,
+            showConfirmButton: false,
+          });
         } else if (response.data.user) {
           const user = response.data.user;
           setFormData({
@@ -46,7 +59,13 @@ const ProfilePage = () => {
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
-        alert("Error fetching user data.");
+        Swal.fire({
+          title: "Error",
+          text: "Error fetching user data.",
+          icon: "error",
+          timer: 2000,
+          showConfirmButton: false,
+        });
       }
     };
 
@@ -89,14 +108,13 @@ const ProfilePage = () => {
   };
 
   const handleMobileKeyDown = (e) => {
-    // อนุญาตเฉพาะปุ่มตัวเลขและปุ่มควบคุม เช่น Backspace
     if (
       !(
-        (e.key >= "0" && e.key <= "9") || // ตัวเลข
-        e.key === "Backspace" || // ลบ
-        e.key === "ArrowLeft" || // ลูกศรซ้าย
-        e.key === "ArrowRight" || // ลูกศรขวา
-        e.key === "Tab" // ปุ่ม Tab
+        (e.key >= "0" && e.key <= "9") || 
+        e.key === "Backspace" || 
+        e.key === "ArrowLeft" || 
+        e.key === "ArrowRight" || 
+        e.key === "Tab"
       )
     ) {
       e.preventDefault();
@@ -114,14 +132,26 @@ const ProfilePage = () => {
         mobile: mobileError,
         email: emailError,
       });
-      alert("Please fix the errors before submitting.");
+      Swal.fire({
+        title: "Validation Error",
+        text: "Please fix the errors before submitting.",
+        icon: "error",
+        timer: 2000,
+        showConfirmButton: false,
+      });
       return;
     }
 
     try {
       const lineUserId = getLineUserId();
       if (!lineUserId) {
-        alert("Line User ID is missing. Please log in again.");
+        Swal.fire({
+          title: "Error",
+          text: "Line User ID is missing. Please log in again.",
+          icon: "error",
+          timer: 2000,
+          showConfirmButton: false,
+        });
         navigate("/");
         return;
       }
@@ -131,81 +161,93 @@ const ProfilePage = () => {
         lineUserId,
       };
 
-      console.log("Data to be sent:", dataToSend);
-
       await axios.post(`${import.meta.env.VITE_API_URL}/user/add-or-update`, dataToSend);
-      alert("Data saved successfully!");
-      navigate("/pdpaPage");
+
+      Swal.fire({
+        title: "Success",
+        text: "Data saved successfully!",
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+      }).then(() => {
+        navigate("/pdpaPage");
+      });
     } catch (error) {
       console.error("Error saving data:", error);
-      alert("Failed to save data!");
+      Swal.fire({
+        title: "Error",
+        text: "Failed to save data!",
+        icon: "error",
+        timer: 2000,
+        showConfirmButton: false,
+      });
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-lg">
-        <h1 className="text-2xl font-bold mb-6 text-center">Welcome to the Profile Page!</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-green-400 via-green-300 to-green-200">
+      <div className="bg-white p-8 rounded-3xl shadow-lg w-full max-w-lg">
+        <h1 className="text-3xl font-semibold mb-6 text-center text-gray-800">Profile Page</h1>
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-gray-700">First Name</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">First Name</label>
             <input
               type="text"
               name="firstname"
               value={formData.firstname}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full px-4 py-3 border rounded-lg text-lg bg-gray-50 focus:ring-2 focus:ring-green-500"
               required
             />
           </div>
 
           <div>
-            <label className="block text-gray-700">Last Name</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
             <input
               type="text"
               name="lastname"
               value={formData.lastname}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full px-4 py-3 border rounded-lg text-lg bg-gray-50 focus:ring-2 focus:ring-green-500"
               required
             />
           </div>
 
           <div>
-            <label className="block text-gray-700">Mobile</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Mobile</label>
             <input
               type="tel"
               name="mobile"
               value={formData.mobile}
               onChange={handleChange}
-              onKeyDown={handleMobileKeyDown} // ใช้ onKeyDown ป้องกันการกรอกที่ไม่ใช่ตัวเลข
-              maxLength="10" // จำกัดความยาว
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              onKeyDown={handleMobileKeyDown}
+              maxLength="10"
+              className="w-full px-4 py-3 border rounded-lg text-lg bg-gray-50 focus:ring-2 focus:ring-green-500"
               required
             />
             {errors.mobile && <p className="text-red-500 text-sm">{errors.mobile}</p>}
           </div>
 
           <div>
-            <label className="block text-gray-700">Birthday</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Birthday</label>
             <input
               type="date"
               name="birthday"
               value={formData.birthday}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full px-4 py-3 border rounded-lg text-lg bg-gray-50 focus:ring-2 focus:ring-green-500"
               required
             />
           </div>
 
           <div>
-            <label className="block text-gray-700">Email</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full px-4 py-3 border rounded-lg text-lg bg-gray-50 focus:ring-2 focus:ring-green-500"
               required
             />
             {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
@@ -213,9 +255,9 @@ const ProfilePage = () => {
 
           <button
             type="submit"
-            className="bg-green-500 text-white py-2 px-4 rounded-lg w-full hover:bg-green-600 transition-all"
+            className="bg-gradient-to-r from-green-500 to-green-400 text-white py-3 px-6 rounded-lg text-lg shadow hover:from-green-400 hover:to-green-300 focus:ring-2 focus:ring-offset-2 focus:ring-green-500 w-full"
           >
-            Submit
+            Save Changes
           </button>
         </form>
       </div>

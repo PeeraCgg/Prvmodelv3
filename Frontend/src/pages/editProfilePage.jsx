@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import liff from "@line/liff";
 import axios from "axios";
 import { getLineUserId } from "../utils/storage.js";
+import Swal from "sweetalert2";
 
 const EditProfilePage = () => {
   const navigate = useNavigate();
@@ -14,11 +15,9 @@ const EditProfilePage = () => {
     birthday: "",
   });
 
-  const [profileImage, setProfileImage] = useState(""); // เก็บ URL รูปโปรไฟล์
-  const [errors, setErrors] = useState({}); // เก็บข้อความ error
+  const [profileImage, setProfileImage] = useState(""); // Store profile image URL
   const [loading, setLoading] = useState(true);
 
-  // ฟังก์ชันดึงข้อมูลจาก LIFF และ Backend
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -26,19 +25,24 @@ const EditProfilePage = () => {
 
         if (liff.isLoggedIn()) {
           const profile = await liff.getProfile();
-          setProfileImage(profile.pictureUrl); // ตั้งค่า URL รูปโปรไฟล์
+          setProfileImage(profile.pictureUrl); // Set profile image URL
         } else {
           liff.login();
         }
 
         const lineUserId = getLineUserId();
         if (!lineUserId) {
-          alert("Line User ID is missing. Please log in again.");
+          Swal.fire({
+            title: "Error",
+            text: "Line User ID is missing. Please log in again.",
+            icon: "error",
+            timer: 2000,
+            showConfirmButton: false,
+          });
           navigate("/");
           return;
         }
 
-        // ดึงข้อมูลโปรไฟล์ผู้ใช้จาก Backend
         const userResponse = await axios.get(
           `${import.meta.env.VITE_API_URL}/user/get-edit-user`,
           { params: { lineUserId } }
@@ -52,8 +56,14 @@ const EditProfilePage = () => {
           birthday: birthday ? birthday.split("T")[0] : "",
         });
       } catch (error) {
-        console.error("Error fetching user data or profile image:", error);
-        alert("Error fetching user data.");
+        console.error("Error fetching user data:", error);
+        Swal.fire({
+          title: "Error",
+          text: "Failed to fetch user data.",
+          icon: "error",
+          timer: 2000,
+          showConfirmButton: false,
+        });
       } finally {
         setLoading(false);
       }
@@ -62,39 +72,24 @@ const EditProfilePage = () => {
     fetchUserData();
   }, [navigate]);
 
-  // ฟังก์ชันตรวจสอบเบอร์โทรศัพท์
-  const validateMobile = (value) => {
-    if (!/^\d{1,10}$/.test(value)) {
-      return "Mobile must be numeric and up to 10 digits.";
-    }
-    return "";
-  };
-
-  // ฟังก์ชันจัดการการเปลี่ยนแปลงข้อมูลฟอร์ม
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevState) => ({ ...prevState, [name]: value }));
-
-    if (name === "mobile") {
-      setErrors((prevState) => ({ ...prevState, mobile: validateMobile(value) }));
-    }
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // ฟังก์ชันจัดการการบันทึกข้อมูล
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const mobileError = validateMobile(formData.mobile);
-    if (mobileError) {
-      setErrors((prevState) => ({ ...prevState, mobile: mobileError }));
-      alert("Please fix the errors before submitting.");
-      return;
-    }
 
     try {
       const lineUserId = getLineUserId();
       if (!lineUserId) {
-        alert("Line User ID is missing. Please log in again.");
+        Swal.fire({
+          title: "Error",
+          text: "Line User ID is missing. Please log in again.",
+          icon: "error",
+          timer: 2000,
+          showConfirmButton: false,
+        });
         navigate("/");
         return;
       }
@@ -108,82 +103,93 @@ const EditProfilePage = () => {
         { params: { lineUserId } }
       );
 
-      alert("Profile updated successfully!");
-      navigate("/prvcard");
+      Swal.fire({
+        title: "Profile Updated!",
+        text: "Your profile has been saved successfully.",
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+      }).then(() => {
+        navigate("/prvcard");
+      });
     } catch (error) {
       console.error("Error saving user data:", error);
-      alert("Failed to update profile!");
+      Swal.fire({
+        title: "Error",
+        text: "Failed to update profile!",
+        icon: "error",
+        timer: 2000,
+        showConfirmButton: false,
+      });
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-lg">
-        <h1 className="text-2xl font-bold mb-6 text-center">Edit Profile</h1>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-green-300 via-green-100 to-green-50">
+      <div className="bg-white p-8 rounded-3xl shadow-md w-full max-w-md">
+        <h1 className="text-2xl font-semibold text-center text-gray-800 mb-6">Edit Profile</h1>
 
         {loading ? (
-          <p>Loading...</p>
+          <p className="text-center text-gray-500">Loading...</p>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* รูปโปรไฟล์ */}
+            {/* Profile Image */}
             {profileImage && (
               <div className="flex justify-center mb-6">
                 <img
                   src={profileImage}
                   alt="Profile"
-                  className="w-24 h-24 rounded-full shadow-md"
+                  className="w-24 h-24 rounded-full shadow-md border-4 border-green-400"
                 />
               </div>
             )}
 
             {/* Full Name */}
             <div>
-              <label className="block text-gray-700">Full Name</label>
+              <label className="block text-gray-700 font-medium mb-2">Full Name</label>
               <input
                 type="text"
                 name="fullname"
                 value={formData.fullname}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                 required
               />
-              {errors.fullname && <p className="text-red-500 text-sm">{errors.fullname}</p>}
             </div>
 
             {/* Email */}
             <div>
-              <label className="block text-gray-700">Email</label>
+              <label className="block text-gray-700 font-medium mb-2">Email</label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                 disabled
               />
             </div>
 
             {/* Mobile */}
             <div>
-              <label className="block text-gray-700">Mobile</label>
+              <label className="block text-gray-700 font-medium mb-2">Mobile</label>
               <input
                 type="tel"
                 name="mobile"
                 value={formData.mobile}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                 disabled
               />
-              {errors.mobile && <p className="text-red-500 text-sm">{errors.mobile}</p>}
             </div>
 
             {/* Birthday */}
             <div>
-              <label className="block text-gray-700">Birthday</label>
+              <label className="block text-gray-700 font-medium mb-2">Birthday</label>
               <input
                 type="date"
                 name="birthday"
                 value={formData.birthday}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                 required
               />
             </div>
@@ -191,7 +197,7 @@ const EditProfilePage = () => {
             {/* Save Button */}
             <button
               type="submit"
-              className="bg-green-500 text-white py-2 px-4 rounded-lg w-full hover:bg-green-600 transition-all"
+              className="bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-4 rounded-xl shadow-md hover:from-green-600 hover:to-green-700 transition-all w-full text-lg font-medium"
             >
               Save
             </button>

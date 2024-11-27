@@ -7,17 +7,11 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# ไฟล์ environment
-.env.developer
-.env.production
-
-# ตัวอย่างไฟล์อื่นที่ควร ignore
 node_modules
 dist
 dist-ssr
 *.local
-.env.local
-.env.*.local
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

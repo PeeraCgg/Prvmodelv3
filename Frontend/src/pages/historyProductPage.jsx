@@ -46,14 +46,14 @@ const RedeemedHistoryPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-lg">
-        <h1 className="text-2xl font-bold mb-4 text-center">Redeemed History</h1>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-green-300 via-green-100 to-green-50">
+      <div className="bg-white p-6 rounded-3xl shadow-lg w-full max-w-lg">
+        <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">Redeemed History</h1>
 
         {loading ? (
-          <p>Loading...</p>
+          <p className="text-center text-gray-600">Loading...</p>
         ) : error ? (
-          <p className="text-red-500 text-center">{error}</p>
+          <p className="text-center text-red-500">{error}</p>
         ) : (
           <>
             {history.length > 0 ? (
@@ -61,9 +61,9 @@ const RedeemedHistoryPage = () => {
                 {history.map((item) => (
                   <div
                     key={item.id}
-                    className="p-4 border rounded-lg shadow-sm"
+                    className="p-4 border rounded-lg shadow-sm bg-gray-50 hover:bg-gray-100 transition-all"
                   >
-                    <p className="text-lg font-semibold">{item.productName}</p>
+                    <p className="text-lg font-medium text-gray-800">{item.productName}</p>
                     <p className="text-sm text-gray-600">Points Used: {item.pointsUsed}</p>
                     <p className="text-sm text-gray-600">
                       Redeemed At: {new Date(item.redeemedAt).toLocaleString()}
@@ -72,14 +72,14 @@ const RedeemedHistoryPage = () => {
                 ))}
               </div>
             ) : (
-              <p className="text-gray-600 text-center">No redeemed history found.</p>
+              <p className="text-center text-gray-500">No redeemed history found.</p>
             )}
           </>
         )}
 
         <button
           onClick={handleBack}
-          className="mt-6 bg-green-500 text-white py-2 px-4 rounded-lg w-full hover:bg-green-600 transition-all"
+          className="mt-6 bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-4 rounded-full shadow-md hover:from-green-600 hover:to-green-700 transition-all duration-300 w-full text-lg font-medium"
         >
           Back to Privilege Card
         </button>

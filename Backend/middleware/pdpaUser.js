@@ -5,69 +5,69 @@ const prisma = new PrismaClient();
 const router = express.Router();
 
 export const pdpaAccess = async (req, res) => {
-    const { lineUserId,checkbox1, checkbox2 } = req.body;
-    console.log("Received data:", {lineUserId, checkbox1, checkbox2 });
-  
-    try {
-      // ตรวจสอบว่า  lineuserid ถูกส่งมาไหม
+  const { lineUserId, checkbox1 } = req.body; // Only handle checkbox1
+  console.log("Received data:", { lineUserId, checkbox1 });
+
+  try {
+      // Check if lineUserId is provided
       if (!lineUserId) {
-        return res.status(400).json({ success: false, message: 'lineUserId is required' });
-      }
-  
-     // ค้นหาผู้ใช้ในตาราง Prv_Users ด้วย lineUserId
-     const user = await prisma.prv_Users.findUnique({
-      where: {lineUserId },
-      });
-      console.log("User found:", user); // ตรวจสอบว่าพบผู้ใช้หรือไม่
-  
-      if (!user) {
-        return res.status(404).json({ success: false, message: 'User not found' });
+          return res.status(400).json({ success: false, message: 'lineUserId is required' });
       }
 
-         // ตรวจสอบว่าผู้ใช้ได้กรอกข้อมูลพื้นฐานในตาราง `Prv_Users` แล้ว
-    if (!user.firstname || !user.lastname || !user.mobile || !user.email) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'User must complete basic information before providing PDPA consent' 
+      // Find user in Prv_Users table by lineUserId
+      const user = await prisma.prv_Users.findUnique({
+          where: { lineUserId },
       });
-    }
-  
-      // Upsert ข้อมูล PDPA ในตาราง Prv_Pdpa
+      console.log("User found:", user); // Log if user is found
+
+      if (!user) {
+          return res.status(404).json({ success: false, message: 'User not found' });
+      }
+
+      // Ensure the user has completed basic information in Prv_Users table
+      if (!user.firstname || !user.lastname || !user.mobile || !user.email) {
+          return res.status(400).json({
+              success: false,
+              message: 'User must complete basic information before providing PDPA consent',
+          });
+      }
+
+      // Upsert PDPA consent into Prv_Pdpa table
       const pdpa = await prisma.prv_Pdpa.upsert({
-        where: { userId: user.id }, // ค้นหาด้วย userId
-        update: {
-          checkbox1,
-          checkbox2,
-        },
-        create: {
+          where: { userId: user.id }, // Find by userId
+          update: {
+              checkbox1,
+          },
+          create: {
+              userId: user.id,
+              checkbox1,
+          },
+      });
+      console.log("Consent saved successfully:", pdpa); // Log success
+
+      // Update status in Prv_Status table to 2
+      await prisma.prv_Status.upsert({
+          where: { userId: user.id },
+          update: { status: 2 },
+          create: { userId: user.id, status: 2 },
+      });
+      console.log("User status updated to 2");
+
+      res.status(201).json({
+          success: true,
+          message: 'Consent saved successfully!',
           userId: user.id,
-          checkbox1,
-          checkbox2,
-        },
+          pdpa,
       });
-      console.log("Consent saved successfully:", pdpa); // ตรวจสอบว่าบันทึกข้อมูลสำเร็จหรือไม่
-       
-       // อัปเดตสถานะในตาราง Prv_Status เป็น 2
-    await prisma.prv_Status.upsert({
-      where: { userId: user.id },
-      update: { status: 2 },
-      create: { userId: user.id, status: 2 },
-    });
-    console.log("User status updated to 2");
-     res.status(201).json({
-        success: true,
-        message: 'Consent saved successfully!',
-        userId: user.id,
-        pdpa,
-      });
-    } catch (error) {
-      console.error('Error saving consent:', error); // แสดงข้อผิดพลาดโดยละเอียด
+  } catch (error) {
+      console.error('Error saving consent:', error); // Log error details
       res.status(500).json({
-        success: false,
-        message: 'Failed to save consent. Please try again.',
+          success: false,
+          message: 'Failed to save consent. Please try again.',
       });
-    }
-  };
+  }
+};
+
 
 
 export const pdpaShow = async (req, res) => {
@@ -99,7 +99,6 @@ export const pdpaShow = async (req, res) => {
           data: {
             userId: user.id,
             checkbox1: false, // ค่าเริ่มต้น
-            checkbox2: false, // ค่าเริ่มต้น
           },
         });
       }

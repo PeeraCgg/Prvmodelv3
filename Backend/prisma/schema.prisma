@@ -39,7 +39,6 @@ model Prv_Users {
 model Prv_Pdpa{
   id Int @id @default(autoincrement())
   checkbox1 Boolean
-  checkbox2 Boolean
   createdAt DateTime @default(now())
   userId    Int       @unique
 
@@ -97,4 +96,11 @@ model Prv_History {
   userId          Int
   product         Prv_Product   @relation(fields: [productId], references: [id])
   productId       Int
+}
+model Prv_Admin {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique // ชื่อผู้ใช้งาน (ไม่ซ้ำกัน)
+  password  String   // รหัสผ่าน (ควรเก็บเป็น hashed password)
+  createdAt DateTime @default(now())
+  role      String   // บทบาท เช่น "admin" หรือ "superadmin" (ถ้าต้องการรองรับหลายระดับ)
 }

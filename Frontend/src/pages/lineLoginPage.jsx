@@ -61,11 +61,6 @@ const LoginWithLine = () => {
             className="flex items-center justify-center bg-green-500 text-white py-2 px-4 rounded-lg w-full hover:bg-green-600 transition-all"
             onClick={() => liff.login()}
           >
-            <img
-              src="/line-icon.png"
-              alt="LINE Icon"
-              className="w-5 h-5 mr-2"
-            />
             Sign in with Line
           </button>
         )}

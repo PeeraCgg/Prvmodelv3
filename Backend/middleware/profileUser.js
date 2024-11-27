@@ -30,36 +30,37 @@ export const loginLine = async (req, res ) => {
 };
 
 export const addOrUpdateUser = async (req, res) => {
-  const { firstname, lastname, mobile, birthday, email, lineUserId  } = req.body;
+  const { firstname, lastname, mobile, birthday, email, lineUserId } = req.body;
 
   try {
-   // ตรวจสอบว่ามีผู้ใช้ที่มี lineUserId นี้อยู่หรือไม่
-   let user = await prisma.prv_Users.findUnique({
-    where: { lineUserId },
-  });
-  if (user) {
-    console.log("Data to be updated:", {
-      firstname,
-      lastname,
-      mobile,
-      birthday: birthday ? new Date(birthday) : null,
-      email,
-      lineUserId,
+    // Check if a user with the provided lineUserId exists
+    let user = await prisma.prv_Users.findUnique({
+      where: { lineUserId },
     });
 
-     // ถ้ามีผู้ใช้ที่มี lineUserId นี้อยู่ ให้ทำการอัปเดตข้อมูล
-     user = await prisma.prv_Users.update({
-      where: { id: user.id },
-      data: {
+    if (user) {
+      console.log("Data to be updated:", {
         firstname,
         lastname,
         mobile,
         birthday: birthday ? new Date(birthday) : null,
         email,
-      },
-    });
+        lineUserId,
+      });
 
-      // อัปเดตสถานะใน Prv_Status เป็น 1
+      // If user exists, update their details
+      user = await prisma.prv_Users.update({
+        where: { id: user.id },
+        data: {
+          firstname,
+          lastname,
+          mobile,
+          birthday: birthday ? new Date(birthday) : null,
+          email,
+        },
+      });
+
+      // Update or create status in Prv_Status
       await prisma.prv_Status.upsert({
         where: { userId: user.id },
         update: { status: 1 },
@@ -77,20 +78,36 @@ export const addOrUpdateUser = async (req, res) => {
         lineUserId,
       });
 
-      // ถ้าไม่มีผู้ใช้อยู่แล้ว ให้สร้างข้อมูลใหม่
+      // Find the smallest available userId
+      const existingUsers = await prisma.prv_Users.findMany({
+        select: { id: true },
+        orderBy: { id: 'asc' },
+      });
+
+      let nextUserId = 1; // Start with the smallest possible ID
+      for (const existingUser of existingUsers) {
+        if (existingUser.id === nextUserId) {
+          nextUserId++; // Increment to find the next available ID
+        } else {
+          break; // Found a gap
+        }
+      }
+
+      // Create a new user with the smallest available ID
       user = await prisma.prv_Users.create({
         data: {
+          id: nextUserId, // Assign the smallest available ID
           firstname,
           lastname,
           mobile,
           birthday: birthday ? new Date(birthday) : null,
           email,
-          lineUserId, // บันทึก lineUserId
-          isVerified: false, // ค่าเริ่มต้นเป็น false รอการยืนยัน
+          lineUserId,
+          isVerified: false, // Default to false, waiting for verification
         },
       });
 
-      // สร้างสถานะใน Prv_Status เป็น 1
+      // Create status in Prv_Status with status 1
       await prisma.prv_Status.create({
         data: {
           userId: user.id,
@@ -109,6 +126,7 @@ export const addOrUpdateUser = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error' });
   }
 };
+
 
 export const getUser = async (req, res) => {
     const { lineUserId } = req.body;

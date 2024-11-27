@@ -23,11 +23,16 @@ import { getUserPrivilege,
          getallreward 
 } from '../middleware/privilegeUser.js'
 
-import { purchaseLicense ,
+import {  adminLogin,
+          allUsers,
+          purchaseLicense ,
           addExpense ,
           deleteExpenseWithTransaction,
           addProducts, 
           deleteProduct,
+          showExpense,
+          deleteExpense,
+          getAllProducts
 
 } from '../middleware/approveUser.js'
 const AuthRoutes = express.Router();
@@ -54,9 +59,14 @@ AuthRoutes.get('/redeem-history-user',getRedeemedHistory ); // redeem history us
 AuthRoutes.get('/get-all-reward', getallreward ); // get all reward user
 
 // admin approve 
+AuthRoutes.post('/admin-login', adminLogin); // admin login
+AuthRoutes.get('/get-all-user', allUsers);  // add product
 AuthRoutes.post('/purchase-license', purchaseLicense);  // purchase license
-AuthRoutes.post('/add-expense', addExpense);  // add expense
+AuthRoutes.get('/show-expense/:userId', showExpense);  // show expense user 1,2,3,4,5,6
+AuthRoutes.delete('/delete-expense/:expenseId', deleteExpense);
+AuthRoutes.post('/add-expense/:userId', addExpense);  // add expense
 AuthRoutes.delete('/delete-expense-with-transaction', deleteExpenseWithTransaction);  // delete expense with transaction
-AuthRoutes.post('/add-product', addProducts);  // add product
+AuthRoutes.get('/get-all-product', getAllProducts); // get all
+AuthRoutes.post('/add-products', addProducts);  // add product
 AuthRoutes.delete('/delete-product/:id', deleteProduct);  // delete product
 export default AuthRoutes;

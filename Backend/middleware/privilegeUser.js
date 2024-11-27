@@ -102,33 +102,32 @@ export const getProducts = async (req, res) => {
 
     const redeemedIds = redeemedProductIds.map((history) => history.productId);
 
-    // Fetch products within the user's point range that have not been redeemed
+    // Fetch all products
     const products = await prisma.prv_Product.findMany({
-      where: {
-        point: { lte: maxPoints },
-        id: { notIn: redeemedIds },
-      },
       select: {
         id: true,
-        productName : true, // Include product name
+        productName: true, // Include product name
         point: true,
       },
     });
 
-    if (products.length === 0) {
-      return res.status(204).send(); // No Content
-    }
+    // Map products to include an isRedeemable flag
+    const productsWithRedeemableFlag = products.map((product) => ({
+      ...product,
+      isRedeemable: product.point <= maxPoints && !redeemedIds.includes(product.id),
+    }));
 
     res.status(200).json({
       message: "Products retrieved successfully!",
       maxPoints,
-      products,
+      products: productsWithRedeemableFlag,
     });
   } catch (error) {
     console.error("Error retrieving products:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
 
 export const redeemProduct = async (req, res) => {
   try {
