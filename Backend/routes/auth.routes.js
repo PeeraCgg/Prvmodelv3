@@ -129,14 +129,6 @@ AuthRoutes.post('/verify-otp', body('token').notEmpty(), body('otp_code').notEmp
 })
 AuthRoutes.post('/update-status-after-otp', updateStatusAfterOtp);
 
-
-
-
-
-
-
-
-
 // verify
 AuthRoutes.post("/requestotp-e", requestOtp);  // requestotp email
 AuthRoutes.post("/verifyotp-e",  verifyOtp);   // verify otpemail
