@@ -185,36 +185,41 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-green-400 via-green-300 to-green-200">
-      <div className="bg-white p-8 rounded-3xl shadow-lg w-full max-w-lg">
-        <h1 className="text-3xl font-semibold mb-6 text-center text-gray-800">Profile Page</h1>
-        <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="flex items-center justify-center min-h-screen bg-[#D3F1DF]">
+      <div className="bg-white p-6 sm:p-8 rounded-3xl shadow-md w-full max-w-md sm:max-w-lg border border-[#85A98F]">
+        <h1 className="text-2xl sm:text-3xl font-semibold mb-4 sm:mb-6 text-center text-[#5A6C57]">
+          Profile Page
+        </h1>
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+          {/* First Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+            <label className="block text-sm font-medium text-[#525B44] mb-2">First Name</label>
             <input
               type="text"
               name="firstname"
               value={formData.firstname}
               onChange={handleChange}
-              className="w-full px-4 py-3 border rounded-lg text-lg bg-gray-50 focus:ring-2 focus:ring-green-500"
+              className="w-full px-3 py-2 sm:py-3 border rounded-lg text-base sm:text-lg bg-gray-50 focus:ring-2 focus:ring-[#85A98F] focus:outline-none"
               required
             />
           </div>
-
+  
+          {/* Last Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+            <label className="block text-sm font-medium text-[#525B44] mb-2">Last Name</label>
             <input
               type="text"
               name="lastname"
               value={formData.lastname}
               onChange={handleChange}
-              className="w-full px-4 py-3 border rounded-lg text-lg bg-gray-50 focus:ring-2 focus:ring-green-500"
+              className="w-full px-3 py-2 sm:py-3 border rounded-lg text-base sm:text-lg bg-gray-50 focus:ring-2 focus:ring-[#85A98F] focus:outline-none"
               required
             />
           </div>
-
+  
+          {/* Mobile */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Mobile</label>
+            <label className="block text-sm font-medium text-[#525B44] mb-2">Mobile</label>
             <input
               type="tel"
               name="mobile"
@@ -222,40 +227,43 @@ const ProfilePage = () => {
               onChange={handleChange}
               onKeyDown={handleMobileKeyDown}
               maxLength="10"
-              className="w-full px-4 py-3 border rounded-lg text-lg bg-gray-50 focus:ring-2 focus:ring-green-500"
+              className="w-full px-3 py-2 sm:py-3 border rounded-lg text-base sm:text-lg bg-gray-50 focus:ring-2 focus:ring-[#85A98F] focus:outline-none"
               required
             />
-            {errors.mobile && <p className="text-red-500 text-sm">{errors.mobile}</p>}
+            {errors.mobile && <p className="text-red-500 text-sm mt-1">{errors.mobile}</p>}
           </div>
-
+  
+          {/* Birthday */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Birthday</label>
+            <label className="block text-sm font-medium text-[#525B44] mb-2">Birthday</label>
             <input
               type="date"
               name="birthday"
               value={formData.birthday}
               onChange={handleChange}
-              className="w-full px-4 py-3 border rounded-lg text-lg bg-gray-50 focus:ring-2 focus:ring-green-500"
+              className="w-full px-3 py-2 sm:py-3 border rounded-lg text-base sm:text-lg bg-gray-50 focus:ring-2 focus:ring-[#85A98F] focus:outline-none"
               required
             />
           </div>
-
+  
+          {/* Email */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+            <label className="block text-sm font-medium text-[#525B44] mb-2">Email</label>
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-3 border rounded-lg text-lg bg-gray-50 focus:ring-2 focus:ring-green-500"
+              className="w-full px-3 py-2 sm:py-3 border rounded-lg text-base sm:text-lg bg-gray-50 focus:ring-2 focus:ring-[#85A98F] focus:outline-none"
               required
             />
-            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
           </div>
-
+  
+          {/* Submit Button */}
           <button
             type="submit"
-            className="bg-gradient-to-r from-green-500 to-green-400 text-white py-3 px-6 rounded-lg text-lg shadow hover:from-green-400 hover:to-green-300 focus:ring-2 focus:ring-offset-2 focus:ring-green-500 w-full"
+            className="bg-gradient-to-r from-[#85A98F] to-[#5A6C57] text-white py-2 sm:py-3 px-4 sm:px-6 rounded-lg text-base sm:text-lg shadow-md hover:from-[#5A6C57] hover:to-[#85A98F] transition-all duration-300 w-full focus:ring-2 focus:ring-offset-2 focus:ring-[#85A98F]"
           >
             Save Changes
           </button>
@@ -263,6 +271,8 @@ const ProfilePage = () => {
       </div>
     </div>
   );
+  
+  
 };
 
 export default ProfilePage;

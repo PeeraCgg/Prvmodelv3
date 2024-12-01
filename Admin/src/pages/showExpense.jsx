@@ -17,7 +17,7 @@ const ExpenseHistory = () => {
     // ดึงข้อมูลประวัติการใช้จ่ายจาก backend
     const fetchExpenseHistory = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/user/show-expense/${userId}`);
+        const response = await axios.get(`https://prvbackend.onrender.com/user/show-expense/${userId}`);
         setExpenseHistory(response.data.data.expenses);
         setTotalAmountPerYear(response.data.data.totalAmountPerYear);
         setPrvType(response.data.data.prvType);
@@ -33,7 +33,7 @@ const ExpenseHistory = () => {
     if (!window.confirm('Are you sure you want to delete this expense?')) return;
 
     try {
-      await axios.delete(`http://localhost:3001/user/delete-expense/${expenseId}`);
+      await axios.delete(`https://prvbackend.onrender.com/user/delete-expense/${expenseId}`);
       setExpenseHistory((prev) => prev.filter((expense) => expense.id !== expenseId));
       setError('');
     } catch (err) {

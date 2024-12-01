@@ -88,14 +88,14 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-green-300 via-green-100 to-green-50">
-      <div className="bg-white shadow-lg rounded-3xl p-4 w-full max-w-md relative">
+    <div className="flex items-center justify-center min-h-screen bg-[#D3F1DF]">
+      <div className="bg-white shadow-md rounded-2xl p-4 sm:p-6 w-full max-w-sm sm:max-w-md relative">
         {/* Profile Header */}
-        <div className="absolute top-4 right-4 flex items-center space-x-4">
+        <div className="absolute top-4 right-4 flex items-center space-x-3">
           <img
             src={profileImage}
             alt="Profile"
-            className="w-8 h-8 rounded-full shadow-md border-2 border-green-400"
+            className="w-8 h-8 rounded-full shadow-md border-2 border-[#85A98F]"
           />
           <button onClick={toggleMenu} className="focus:outline-none">
             <svg
@@ -116,35 +116,35 @@ const ProfilePage = () => {
         {menuOpen && (
           <div
             ref={menuRef}
-            className="absolute right-4 top-16 bg-white shadow-lg rounded-lg w-44 z-20"
+            className="absolute right-4 top-16 bg-white shadow-lg rounded-lg w-44 z-20 border border-gray-200"
           >
             <ul>
               <li
                 className="py-2 px-4 hover:bg-gray-100 cursor-pointer text-gray-700 flex items-center"
                 onClick={() => navigate('/editprofile')}
               >
-                <span className="material-icons text-gray-500 mr-2">edit</span>
+                <span className="material-icons text-gray-500 mr-2"></span>
                 Edit Profile
               </li>
               <li
                 className="py-2 px-4 hover:bg-gray-100 cursor-pointer text-gray-700 flex items-center"
                 onClick={() => navigate('/pdpashow')}
               >
-                <span className="material-icons text-gray-500 mr-2">policy</span>
+                <span className="material-icons text-gray-500 mr-2"></span>
                 Consent
               </li>
               <li
                 className="py-2 px-4 hover:bg-gray-100 cursor-pointer text-gray-700 flex items-center"
                 onClick={() => navigate('/allreward')}
               >
-                <span className="material-icons text-gray-500 mr-2">redeem</span>
+                <span className="material-icons text-gray-500 mr-2"></span>
                 All Rewards
               </li>
               <li
                 className="py-2 px-4 hover:bg-gray-100 cursor-pointer text-gray-700 flex items-center"
                 onClick={() => navigate('/redeemedhistory')}
               >
-                <span className="material-icons text-gray-500 mr-2">history</span>
+                <span className="material-icons text-gray-500 mr-2"></span>
                 History Redeem
               </li>
             </ul>
@@ -153,23 +153,22 @@ const ProfilePage = () => {
   
         {/* Membership Card */}
         <div
-          className={`flex items-center justify-between p-10 rounded-xl shadow-md relative text-white mt-10 ${getBackgroundColor(
+          className={`flex items-center justify-between p-6 sm:p-8 rounded-xl shadow-lg text-white mt-10 ${getBackgroundColor(
             prvType
           )}`}
-          style={{ height: '190px' }} // ตั้งความสูงสำหรับการ์ด
+          style={{ height: '190px' }}
         >
-          {/* Logo */}
           <div className="flex flex-col items-center">
             <div className="relative">
-              {/* วงกลมรอบตัว C */}
-              <div className="w-20 h-20 rounded-full border-4 border-[#fbbd5c] flex items-center justify-center shadow-lg ">
-                <div className="w-14 h-14 rounded-full border-4 border-[#fbbd5c] flex items-center justify-center shadow-md ">
-                  <p className="text-[32px] font-extrabold bg-gradient-to-br from-[#fbd55b] to-[#d8a93a] bg-clip-text text-transparent">
+              {/* Circle Decoration */}
+              <div className="w-20 h-20 rounded-full border-4 border-[#fbbd5c] flex items-center justify-center shadow-lg">
+                <div className="w-14 h-14 rounded-full border-4 border-[#fbbd5c] flex items-center justify-center shadow-md">
+                  <p className="text-2xl font-extrabold bg-gradient-to-br from-[#fbd55b] to-[#d8a93a] bg-clip-text text-transparent">
                     C
                   </p>
                 </div>
               </div>
-              {/* ขีดด้านล่าง */}
+              {/* Line Decoration */}
               <div className="w-8 h-2 bg-gradient-to-r from-[#fbbd5c] to-[#d8a93a] mt-2 mx-auto shadow-sm"></div>
             </div>
           </div>
@@ -183,11 +182,11 @@ const ProfilePage = () => {
               Privilege Card
             </p>
             <div className="mt-2">
-              <p className="text-xs tracking-wide">Points</p>
+              <p className="text-xs tracking-wide text-gray-200">Points</p>
               <p className="text-lg font-semibold">{points}</p>
               <div className="w-full bg-gray-600 rounded-full h-2 mt-2">
                 <div
-                  className="bg-yellow-400 h-2 rounded-full"
+                  className="bg-[#fbbd5c] h-2 rounded-full"
                   style={{ width: `${progressWidth}%` }}
                 ></div>
               </div>
@@ -195,22 +194,44 @@ const ProfilePage = () => {
           </div>
         </div>
   
+        {/* Expiry Date */}
         <div className="flex justify-between mt-6">
-          <p className="text-sm font-medium">Expire Date</p>
-          <p className="text-sm">
+          <p className="text-sm font-medium text-gray-600">Expire Date</p>
+          <p className="text-sm text-gray-700">
             {loading ? 'Loading...' : expireDate ? new Date(expireDate).toLocaleDateString() : 'N/A'}
           </p>
         </div>
   
+        {/* Terms and Conditions */}
+        <div className="mt-6 text-left">
+  <h3 className="text-md font-semibold text-gray-800">TERM & CONDITION</h3>
+  <div className="mt-2 text-xs sm:text-sm text-gray-600 max-h-32 sm:max-h-full overflow-y-auto space-y-2 border border-gray-200 p-3 rounded-lg shadow-inner bg-[#F9F9F9]">
+    <ul>
+      <li>Chee Chan Privilege Card valid 1 year from issued date.</li>
+      <li>
+        Card Holder needs to show their Chee Chan Privilege Card every time at
+        Chee Chan Golf Resort for special Privilege.
+      </li>
+      <li>Chee Chan Privilege Card and its benefits are non-transferable to any other individual.</li>
+      <li>
+        Chee Chan Golf Resort reserves the right to adjust prices or impose
+        additional restrictions at any time with or without notice.
+      </li>
+    </ul>
+  </div>
+</div>
+  
         <button
           onClick={() => navigate('/viewreward')}
-          className="bg-gradient-to-r from-green-500 to-green-600 text-white py-2 px-3 w-full rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-md text-md font-medium mt-4"
+          className="bg-gradient-to-r from-[#85A98F] to-[#5A6C57] text-white py-2 px-4 w-full rounded-lg hover:from-[#5A6C57] hover:to-[#85A98F] transition-all duration-300 shadow-md text-sm sm:text-md font-medium mt-6"
         >
           View Rewards
         </button>
       </div>
     </div>
   );
+  
+  
   
   
 };

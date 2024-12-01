@@ -12,7 +12,7 @@ const AllProduct = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:3001/user/get-all-product"); // Replace with your API URL
+        const response = await axios.get("https://prvbackend.onrender.com/user/get-all-product"); // Replace with your API URL
         console.log('Products fetched:', response.data); // Debug response
         setProducts(response.data.products || []); // Ensure products is always an array
       } catch (error) {
@@ -39,7 +39,7 @@ const AllProduct = () => {
 
     if (confirmation.isConfirmed) {
       try {
-        await axios.delete(`http://localhost:3001/user/delete-product/${id}`); // Replace with your delete endpoint
+        await axios.delete(`https://prvbackend.onrender.com/user/delete-product/${id}`); // Replace with your delete endpoint
         setProducts((prev) => prev.filter((product) => product.id !== id)); // Remove the product from the UI
         Swal.fire('Deleted!', 'Your product has been deleted.', 'success');
       } catch (error) {

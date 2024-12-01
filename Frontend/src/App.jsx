@@ -11,6 +11,7 @@ import ShowPdpa from "./pages/pdpashowPage";
 import ViewRewardPage from "./pages/viewRewardPage";
 import RedeemedHistoryPage from "./pages/historyProductPage";
 import AllRewardsPage from "./pages/allrewardPage";
+import VerifyOtpPage from "./pages/mobileVerify";
 function App() {
  
     return(  
@@ -22,12 +23,14 @@ function App() {
       <Route path="/pdpaPage" element={<PdpaPage />} />
       <Route path="/twowayverify" element={<TwoWayVerify />} />
       <Route path="/emailverify" element={<EmailVerifyOtp />} />
+      <Route path="/checkOtp" element={<VerifyOtpPage />} />
       <Route path="/prvcard" element={< PrvCardPage/>} />
       <Route path="/editprofile" element={< EditProfilePage/>} />
       <Route path="/pdpashow" element={< ShowPdpa/>} />
       <Route path="/viewreward" element={< ViewRewardPage />} />
       <Route path="/redeemedhistory" element={< RedeemedHistoryPage />} />
       <Route path="/allreward" element={< AllRewardsPage />} />
+     
     </Routes>
     )};
  

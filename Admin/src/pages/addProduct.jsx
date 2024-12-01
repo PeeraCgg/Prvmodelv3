@@ -40,7 +40,7 @@ const AddProduct = () => {
     if (confirmation.isConfirmed) {
       try {
         const response = await axios.post(
-          'http://localhost:3001/user/add-products', // Update with your endpoint
+          'https://prvbackend.onrender.com/user/add-products', // Update with your endpoint
           { products }
         );
 

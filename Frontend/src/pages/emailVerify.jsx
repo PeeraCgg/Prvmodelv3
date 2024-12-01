@@ -148,19 +148,21 @@ function EmailVerifyOtp() {
   }, [countdown]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-green-200 via-green-300 to-green-100">
-      <div className="bg-white shadow-2xl rounded-3xl p-8 w-full max-w-md text-center">
-        <h1 className="text-3xl font-semibold text-gray-800 mb-4 tracking-wide">
+    <div className="flex items-center justify-center min-h-screen bg-[#D3F1DF]">
+      <div className="bg-white shadow-lg rounded-2xl p-6 sm:p-8 w-full max-w-sm sm:max-w-md text-center border border-[#85A98F]">
+        <h1 className="text-2xl sm:text-3xl font-semibold text-[#5A6C57] mb-4 tracking-wide">
           Confirm your code
         </h1>
-        <p className="text-gray-600 mb-6 leading-relaxed">
+        <p className="text-sm sm:text-base text-[#525B44] mb-6 leading-relaxed">
           Enter the 6-digit code we sent to your email.
         </p>
-
-        {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
-
+  
+        {errorMessage && (
+          <p className="text-sm text-red-500 mb-4">{errorMessage}</p>
+        )}
+  
         <form onSubmit={handleVerifyOtp} className="flex flex-col items-center">
-          <div className="flex space-x-2 mb-6">
+          <div className="flex space-x-2 mb-4 sm:mb-6">
             {otp.map((value, index) => (
               <input
                 key={index}
@@ -170,32 +172,39 @@ function EmailVerifyOtp() {
                 value={value}
                 onChange={(e) => handleChange(e, index)}
                 onKeyDown={(e) => handleKeyDown(e, index)}
-                className="w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-12 h-12 sm:w-14 sm:h-14 border border-gray-300 rounded-lg text-center text-lg sm:text-xl font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-[#85A98F] transition-all"
                 required
               />
             ))}
           </div>
           <button
             type="submit"
-            className="bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-6 rounded-full shadow-md hover:from-green-600 hover:to-green-700 transition-all duration-300 w-full max-w-xs"
+            className={`bg-gradient-to-r from-[#85A98F] to-[#5A6C57] text-white py-2 sm:py-3 px-4 sm:px-6 rounded-lg shadow-md hover:from-[#5A6C57] hover:to-[#85A98F] transition-all duration-300 w-full max-w-xs ${
+              otp.join('').length < 6 ? 'opacity-75 cursor-not-allowed' : ''
+            }`}
             disabled={otp.join('').length < 6}
           >
             Confirm
           </button>
         </form>
-
-        {message && <p className="mt-4 text-green-500">{message}</p>}
+  
+        {message && (
+          <p className="mt-4 text-sm sm:text-base text-[#85A98F]">{message}</p>
+        )}
         <button
           type="button"
-          className="mt-4 text-green-600 font-medium hover:underline"
+          className="mt-4 text-sm sm:text-base text-[#85A98F] font-medium hover:underline"
           onClick={handleSendCodeAgain}
           disabled={countdown > 0}
         >
-          {countdown > 0 ? `Send code again in ${countdown}s` : 'Send code again'}
+          {countdown > 0
+            ? `Send code again in ${countdown}s`
+            : 'Send code again'}
         </button>
       </div>
     </div>
   );
+  
 }
 
 export default EmailVerifyOtp;

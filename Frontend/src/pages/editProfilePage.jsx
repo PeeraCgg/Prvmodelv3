@@ -125,10 +125,12 @@ const EditProfilePage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-green-300 via-green-100 to-green-50">
-      <div className="bg-white p-8 rounded-3xl shadow-md w-full max-w-md">
-        <h1 className="text-2xl font-semibold text-center text-gray-800 mb-6">Edit Profile</h1>
-
+    <div className="flex items-center justify-center min-h-screen bg-[#D3F1DF]">
+      <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg w-full max-w-sm sm:max-w-md">
+        <h1 className="text-xl sm:text-2xl font-semibold text-center text-[#5A6C57] mb-6">
+          Edit Profile
+        </h1>
+  
         {loading ? (
           <p className="text-center text-gray-500">Loading...</p>
         ) : (
@@ -139,65 +141,73 @@ const EditProfilePage = () => {
                 <img
                   src={profileImage}
                   alt="Profile"
-                  className="w-24 h-24 rounded-full shadow-md border-4 border-green-400"
+                  className="w-24 h-24 sm:w-28 sm:h-28 rounded-full shadow-md border-4 border-[#85A98F]"
                 />
               </div>
             )}
-
+  
             {/* Full Name */}
             <div>
-              <label className="block text-gray-700 font-medium mb-2">Full Name</label>
+              <label className="block text-sm sm:text-base text-[#525B44] font-medium mb-2">
+                Full Name
+              </label>
               <input
                 type="text"
                 name="fullname"
                 value={formData.fullname}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#85A98F]"
                 required
               />
             </div>
-
+  
             {/* Email */}
             <div>
-              <label className="block text-gray-700 font-medium mb-2">Email</label>
+              <label className="block text-sm sm:text-base text-[#525B44] font-medium mb-2">
+                Email
+              </label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#85A98F]"
                 disabled
               />
             </div>
-
+  
             {/* Mobile */}
             <div>
-              <label className="block text-gray-700 font-medium mb-2">Mobile</label>
+              <label className="block text-sm sm:text-base text-[#525B44] font-medium mb-2">
+                Mobile
+              </label>
               <input
                 type="tel"
                 name="mobile"
                 value={formData.mobile}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#85A98F]"
                 disabled
               />
             </div>
-
+  
             {/* Birthday */}
             <div>
-              <label className="block text-gray-700 font-medium mb-2">Birthday</label>
+              <label className="block text-sm sm:text-base text-[#525B44] font-medium mb-2">
+                Birthday
+              </label>
               <input
                 type="date"
                 name="birthday"
                 value={formData.birthday}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#85A98F]"
                 required
               />
             </div>
-
+  
             {/* Save Button */}
             <button
               type="submit"
-              className="bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-4 rounded-xl shadow-md hover:from-green-600 hover:to-green-700 transition-all w-full text-lg font-medium"
+              className="bg-gradient-to-r from-[#85A98F] to-[#5A6C57] text-white py-2 sm:py-3 px-4 rounded-lg shadow-md hover:from-[#5A6C57] hover:to-[#85A98F] transition-all w-full text-sm sm:text-lg font-medium"
             >
               Save
             </button>
@@ -206,6 +216,7 @@ const EditProfilePage = () => {
       </div>
     </div>
   );
+  
 };
 
 export default EditProfilePage;

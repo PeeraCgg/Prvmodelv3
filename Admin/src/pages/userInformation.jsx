@@ -12,7 +12,7 @@ const UserInformation = () => {
     // Fetch user data from the backend
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3001/user/get-all-user");
+        const response = await axios.get("https://prvbackend.onrender.com/user/get-all-user");
         setUsers(response.data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -26,14 +26,20 @@ const UserInformation = () => {
     setDropdownVisible((prev) => (prev === userId ? null : userId));
   };
 
-  // Filter users by search term
-  const filteredUsers = users.filter(
-    (user) =>
-      user.firstname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.lastname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.mobile.includes(searchTerm) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase())
+// Filter users by search term
+const filteredUsers = users.filter((user) => {
+  const firstName = user.firstname?.toLowerCase() || '';
+  const lastName = user.lastname?.toLowerCase() || '';
+  const email = user.email?.toLowerCase() || '';
+  const mobile = user.mobile || '';
+
+  return (
+    firstName.includes(searchTerm.toLowerCase()) ||
+    lastName.includes(searchTerm.toLowerCase()) ||
+    mobile.includes(searchTerm) ||
+    email.includes(searchTerm.toLowerCase())
   );
+});
 
   // Format date to y/m/d
   const formatDate = (date) => {

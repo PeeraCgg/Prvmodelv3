@@ -13,7 +13,7 @@ const AdminLogin = () => {
 
     try {
       // เรียก API backend เพื่อตรวจสอบ username/password
-      const response = await axios.post("http://localhost:3001/user/admin-login", {
+      const response = await axios.post("https://prvbackend.onrender.com/user/admin-login", {
         username,
         password,
       });

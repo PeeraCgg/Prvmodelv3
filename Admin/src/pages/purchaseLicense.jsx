@@ -11,7 +11,7 @@ const PurchaseLicense = () => {
   const handlePurchase = async () => {
     try {
       // เรียก API เพื่อซื้อ License
-      const response = await axios.post("http://localhost:3001/user/purchase-license", {
+      const response = await axios.post("https://prvbackend.onrender.com/user/purchase-license", {
         userId: id,
       });
       setMessage(response.data.message); // ตั้งค่าข้อความสำเร็จ

@@ -20,7 +20,7 @@ const AddExpense = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`http://localhost:3001/user/add-expense/${userId}`, {
+      const response = await axios.post(`https://prvbackend.onrender.com/user/add-expense/${userId}`, {
         expenseAmount: parseFloat(expenseAmount),
         transactionDate,
       });

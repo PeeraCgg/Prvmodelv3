@@ -10,6 +10,7 @@ lerna-debug.log*
 # ไฟล์ environment
 .env.developer
 .env.production
+.env*
 
 # ตัวอย่างไฟล์อื่นที่ควร ignore
 node_modules

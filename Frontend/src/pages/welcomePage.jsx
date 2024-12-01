@@ -69,26 +69,25 @@ const WelcomePage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-green-300 via-green-200 to-green-100">
-      <div className="w-full max-w-xs sm:max-w-md lg:max-w-lg bg-white shadow-2xl rounded-3xl p-6 border border-gray-200 relative">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[#D3F1DF]">
+      <div className="w-full max-w-xs sm:max-w-md lg:max-w-lg bg-gradient-to-r from-[#D3F1DF] to-white shadow-lg rounded-3xl p-8 border border-[#85A98F] relative">
         {/* Logout Button */}
         <div className="absolute top-4 right-4">
           <button
             onClick={handleLogout}
-            className="flex items-center px-1 py-1 bg-gray-100 rounded-full shadow-md hover:bg-gray-200 transition-all"
+            className="flex items-center px-3 py-2 bg-[#D3F1DF] rounded-full shadow-md hover:bg-[#85A98F] transition-all"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="20"
               width="20"
-              fill="currentColor"
-              className="mr-2 text-red-500"
+              fill="#525B44"
+              className="mr-1"
               viewBox="0 0 24 24"
             >
               <path d="M0 0h24v24H0z" fill="none" />
               <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
             </svg>
-            
           </button>
         </div>
         {/* Profile Picture */}
@@ -96,26 +95,29 @@ const WelcomePage = () => {
           <img
             src={userProfile.pictureUrl}
             alt="User Profile"
-            className="w-28 h-28 rounded-full mx-auto mb-4 shadow-lg"
+            className="w-24 h-24 mx-auto mb-6 shadow-lg sm:w-28 sm:h-28 border-4 border-[#85A98F] rounded-full"
           />
         )}
         {/* Title */}
-        <h1 className="text-center text-3xl font-semibold mb-2 text-gray-800">
+        <h1 className="text-center text-2xl sm:text-3xl font-semibold mb-4 text-[#5A6C57]">
           Welcome to Chee Chan Golf
         </h1>
-        <p className="text-center text-gray-500 text-base mb-6">
+        <p className="text-center text-[#525B44] text-sm sm:text-base mb-8">
           Hello, <span className="font-medium">{userProfile?.displayName}</span>! Join now to enjoy exclusive privileges.
         </p>
         {/* Button */}
         <button
           onClick={handleGoToProfilePage}
-          className="bg-gradient-to-r from-green-600 via-green-500 to-green-400 text-white py-3 px-6 rounded-full shadow-md hover:from-green-500 hover:to-green-300 transition-all duration-300 w-full"
+          className="bg-gradient-to-r from-[#85A98F] to-[#5A6C57] text-white py-2 sm:py-3 px-4 sm:px-6 rounded-full shadow-lg hover:from-[#5A6C57] hover:to-[#85A98F] transition-all duration-300 w-full text-sm sm:text-base font-medium"
         >
-          Let`s Go
+          Let’s Go
         </button>
       </div>
     </div>
   );
+  
+  
+  
 };
 
 export default WelcomePage;
